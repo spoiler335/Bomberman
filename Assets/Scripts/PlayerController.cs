@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
-
+    [SerializeField] GameObject bombPrefab;
+    private bool canMove = true;
 
     private Animator anim;
     private Rigidbody rb;
@@ -17,6 +18,28 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        UpdateMovement();
+
+        if(Input.GetKeyDown(KeyCode.Space) )
+        {
+            Instantiate(bombPrefab,new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z)),bombPrefab.transform.rotation);
+        }
+    }
+
+    void UpdateMovement()
+    {
+        anim.SetBool("isWalking", false);
+
+        if(!canMove)
+        {
+            return;
+        }
+
+        Move();
+    }
+
+    void Move()
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
