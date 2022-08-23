@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Destrcutable
   - Non-Destrcutable
+  - Explosion
+  - Enemy
   layers:
   - Default
   - TransparentFX

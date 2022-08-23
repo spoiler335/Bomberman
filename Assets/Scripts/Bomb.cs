@@ -35,7 +35,7 @@ public class Bomb : MonoBehaviour
             RaycastHit hit;
 
             Physics.Raycast(transform.position + new Vector3(0,0.5f,0), direction, out hit);
-            if(hit.collider.CompareTag("Destrcutable"))
+            if(hit.collider.CompareTag("Destrcutable") || hit.collider.CompareTag("Player") || hit.collider.CompareTag("Enemy"))
             {
                 Instantiate(explosion,transform.position + (i*direction), explosion.transform.rotation);
                 Destroy(hit.collider.gameObject,0.1f);
