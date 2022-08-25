@@ -23,7 +23,7 @@ public class Bomb : MonoBehaviour
         StartCoroutine(createExplosion(Vector3.back));
         exploded = true;
         Destroy(gameObject,0.3f);
-        --GameManager.Instance.BombCount;
+        --LevelManager.Instance.BombCount;
     }
     
 

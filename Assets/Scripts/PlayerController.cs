@@ -24,10 +24,10 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) )
         {
-            if(GameManager.Instance.BombCount <1 )
+            if(LevelManager.Instance.BombCount <1 )
             {
                 Instantiate(bombPrefab,new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z)),bombPrefab.transform.rotation);
-                ++GameManager.Instance.BombCount ;
+                ++LevelManager.Instance.BombCount ;
             }
         }
     }
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Explosion") )
         {
-            GameManager.Instance.isPlayerDead = true;
+            LevelManager.Instance.isPlayerDead = true;
             Destroy(gameObject,0.5f);
         }     
     }
