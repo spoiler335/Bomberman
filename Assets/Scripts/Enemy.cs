@@ -5,91 +5,94 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    enum State
+    {
+        idel,
+        moving
+    }
     private Animator anim;
     private Rigidbody rb;
     private NavMeshAgent nav;
 
     [SerializeField] float minTime =2f;
     [SerializeField] float maxTime =2f;
+    [SerializeField] LayerMask floorMask = 0;
 
-    private float wait;
+    private float waitTime;
+    private State currentState;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rb =  GetComponent<Rigidbody>();
         nav= GetComponent<NavMeshAgent>();    
+        currentState = State.idel; 
+        waitTime = 0;
     }
 
     
     void Update()
     {
-        wait = Random.Range(minTime, maxTime);
-        if(!nav.hasPath || nav.remainingDistance <1f)
+        switch(currentState)
         {
-            StartCoroutine(Move());
-        } 
-        //StartCoroutine(Move());
-        
+            case State.idel:
+            {
+                Wander();
+                break;
+            }
+
+            case State.moving:
+            {
+                Wait();
+                break;
+            }
+        }
     }
 
+    void Wander()
+    {
+        if(waitTime >0)
+        {
+            waitTime -= Time.deltaTime;
+            return;
+        }
+        nav.SetDestination(RandomNavSphere(transform.position, 1f, floorMask));
+        currentState = State.moving;
+        anim.SetBool("isMoving",true);
+    }
+
+    void Wait()
+    {
+        if(nav.pathStatus != NavMeshPathStatus.PathComplete)
+        {
+            return;
+        }
+        waitTime = Random.Range(minTime, maxTime);
+        currentState = State.idel;
+        anim.SetBool("isMoving",false);
+    }
+
+    Vector3 RandomNavSphere(Vector3 origin, float distance,LayerMask layerMask)
+    {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
+        randomDirection += origin;
+        NavMeshHit navHit;
+        NavMesh.SamplePosition(randomDirection, out navHit, distance, layerMask);
+        return navHit.position;
+    }
+    
     private void OnCollisionEnter(Collision other) 
     {
         if(other.gameObject.CompareTag("Player"))
         {
             anim.SetTrigger("Attack");
         }    
+
+        if(other.gameObject.CompareTag("Explosion"))
+        {
+            anim.SetBool("isDead", true);
+        }
     }
-
-    IEnumerator Move()
-    {
-        //RaycastHit hit;
-        int r= Random.Range(0,4);
-        Vector3 newPos = Vector3.zero;
-        if(r==0)
-        {   
-            // Physics.Raycast(transform.position + new Vector3(0,0.5f,0), Vector3.left, out hit);
-            // if( !hit.collider.CompareTag("Wall") && !hit.collider.CompareTag("Destrcutable") && !hit.collider.CompareTag("Non-Destrcutable") )
-            // {
-                newPos = new Vector3(Mathf.RoundToInt(transform.position.x+1f),transform.position.y,Mathf.RoundToInt(transform.position.z));   
-                nav.SetDestination(newPos);
-            //}
-        }
-
-        else if(r==1)
-        {
-            // Physics.Raycast(transform.position , Vector3.right, out hit);
-            // if( !hit.collider.CompareTag("Wall") && !hit.collider.CompareTag("Destrcutable") && !hit.collider.CompareTag("Non-Destrcutable") )
-            // {
-                newPos = new Vector3(Mathf.RoundToInt(transform.position.x-1f),transform.position.y,Mathf.RoundToInt(transform.position.z));   
-                nav.SetDestination(newPos);
-            //}
-        }
-
-        else if(r==2)
-        {
-            // Physics.Raycast(transform.position + new Vector3(0,0.5f,0), Vector3.forward, out hit);
-            // if( !hit.collider.CompareTag("Wall") && !hit.collider.CompareTag("Destrcutable") && !hit.collider.CompareTag("Non-Destrcutable") )
-            // {
-                newPos = new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z+1f));
-                nav.SetDestination(newPos);   
-            //}
-        }
-
-        else if(r==3)
-        {
-            // Physics.Raycast(transform.position + new Vector3(0,0.5f,0), Vector3.back, out hit);
-            // if( !hit.collider.CompareTag("Wall") && !hit.collider.CompareTag("Destrcutable") && !hit.collider.CompareTag("Non-Destrcutable") )
-            // {
-                newPos = new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z-1f));   
-                nav.SetDestination(newPos);
-            //}
-        }
-
-        yield return new WaitForSeconds(wait);
-    }
-
-    
 
     
 }

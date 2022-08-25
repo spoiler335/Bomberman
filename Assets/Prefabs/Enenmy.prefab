@@ -827,6 +827,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTime: 2
   maxTime: 5
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!195 &8796765144849245114
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -837,7 +840,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.54
-  m_Speed: 3
+  m_Speed: 5
   m_Acceleration: 2
   avoidancePriority: 50
   m_AngularSpeed: 120
