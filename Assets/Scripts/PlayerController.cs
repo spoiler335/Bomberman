@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
     private Rigidbody rb;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -23,7 +24,11 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) )
         {
-            Instantiate(bombPrefab,new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z)),bombPrefab.transform.rotation);
+            if(GameManager.Instance.BombCount <1 )
+            {
+                Instantiate(bombPrefab,new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z)),bombPrefab.transform.rotation);
+                ++GameManager.Instance.BombCount ;
+            }
         }
     }
 
@@ -44,28 +49,28 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
-        if(y==1) //up
+        if(y==-1) //up
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y,speed);
             transform.rotation = Quaternion.Euler(0,0,0);
             anim.SetBool("isWalking",true);
         } 
 
-        if(y==-1)
+        if(y==1)
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y,-speed);
             transform.rotation = Quaternion.Euler(0,180,0);
             anim.SetBool("isWalking",true);
         }
 
-        if(x==-1)
+        if(x==1)
         {
             rb.velocity = new Vector3(-speed, rb.velocity.y,rb.velocity.z);
             transform.rotation = Quaternion.Euler(0,270,0);
             anim.SetBool("isWalking",true);
         }
 
-        if(x==1) //right
+        if(x==-1) //right
         {
             rb.velocity = new Vector3(speed, rb.velocity.y,rb.velocity.z);
             transform.rotation = Quaternion.Euler(0,90,0);

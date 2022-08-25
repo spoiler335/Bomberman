@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    public int BombCount = 0;
     public int enemyCount = 5;
     public bool isPlayerDead = false;
     

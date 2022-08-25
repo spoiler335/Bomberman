@@ -23,6 +23,7 @@ public class Bomb : MonoBehaviour
         StartCoroutine(createExplosion(Vector3.back));
         exploded = true;
         Destroy(gameObject,0.3f);
+        --GameManager.Instance.BombCount;
     }
     
 
@@ -34,7 +35,7 @@ public class Bomb : MonoBehaviour
         {
             RaycastHit hit;
 
-            Physics.Raycast(transform.position + new Vector3(0,0.5f,0), direction, out hit);
+            Physics.Raycast(transform.position + new Vector3(0,0.5f,0), direction, out hit,3f);
             if(hit.collider.CompareTag("Destrcutable") || hit.collider.CompareTag("Player") || hit.collider.CompareTag("Enemy"))
             {
                 Instantiate(explosion,transform.position + (i*direction), explosion.transform.rotation);

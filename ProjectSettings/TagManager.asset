@@ -8,6 +8,7 @@ TagManager:
   - Non-Destrcutable
   - Explosion
   - Enemy
+  - Wall
   layers:
   - Default
   - TransparentFX
