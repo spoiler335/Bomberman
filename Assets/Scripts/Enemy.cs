@@ -91,7 +91,6 @@ public class Enemy : MonoBehaviour
         if(other.gameObject.CompareTag("Explosion"))
         {
             anim.SetBool("isDead", true);
-            --LevelManager.Instance.enemyCount;
         }
     }
 

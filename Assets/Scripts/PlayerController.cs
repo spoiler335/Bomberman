@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
             {
                 Instantiate(bombPrefab,new Vector3(Mathf.RoundToInt(transform.position.x),transform.position.y,Mathf.RoundToInt(transform.position.z)),bombPrefab.transform.rotation);
                 ++LevelManager.Instance.BombCount ;
+                AudioManager.Instance.playSound("sound1");
             }
         }
     }
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Explosion") )
         {
+            AudioManager.Instance.playSound("sound3");
             LevelManager.Instance.isPlayerDead = true;
             Destroy(gameObject,0.5f);
         }     

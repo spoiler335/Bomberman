@@ -36,10 +36,19 @@ public class Bomb : MonoBehaviour
             RaycastHit hit;
 
             Physics.Raycast(transform.position + new Vector3(0,0.5f,0), direction, out hit,3f);
-            if(hit.collider.CompareTag("Destrcutable") || hit.collider.CompareTag("Player") || hit.collider.CompareTag("Enemy"))
+            if(hit.collider.CompareTag("Destrcutable") || hit.collider.CompareTag("Player") )
             {
                 Instantiate(explosion,transform.position + (i*direction), explosion.transform.rotation);
                 Destroy(hit.collider.gameObject,0.1f);
+                AudioManager.Instance.playSound("sound2");
+            }
+            else if (hit.collider.CompareTag("Enemy") )
+            {
+                Instantiate(explosion,transform.position + (i*direction), explosion.transform.rotation);
+                hit.collider.GetComponent<BoxCollider>().enabled = false;
+                AudioManager.Instance.playSound("sound2");
+                LevelManager.Instance.enemyCount--;
+                Destroy(hit.collider.gameObject,1f);
             }
             else
             {
