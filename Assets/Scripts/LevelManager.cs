@@ -7,9 +7,7 @@ using System;
 public class LevelManager : MonoBehaviour
 {
 
-    [SerializeField] Transform[] spawnPoints;
-
-    [SerializeField] GameObject enemyPrefab;
+    
     
     public int BombCount = 0;
     public int enemyCount = 0;
@@ -23,11 +21,12 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            this.enemyCount = 0;
         }
     }
     void Start()
     {
-        spawnEnemies();
+
     }
 
     // Update is called once per frame
@@ -36,13 +35,6 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    void spawnEnemies()
-    {   
-        System.Random r = new System.Random();
-        for(int i = 0; i < 5; ++i)
-        {
-            Instantiate(enemyPrefab,spawnPoints[r.Next(spawnPoints.Length)].position, Quaternion.identity);
-        }
-    }
+    
     
 }
