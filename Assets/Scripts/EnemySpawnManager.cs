@@ -9,7 +9,8 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField] GameObject enemyPrefab;
     
     void Start()
-    {
+    {   
+        LevelManager.Instance.enemyCount = 0;
         spawnEnemies();
     }
 

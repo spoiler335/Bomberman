@@ -81,11 +81,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) 
     {
-        if(other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Explosion") )
+        if(other.gameObject.CompareTag("Enemy") )
         {
             AudioManager.Instance.playSound("sound3");
             LevelManager.Instance.isPlayerDead = true;
             Destroy(gameObject,0.5f);
+            Debug.Log(LevelManager.Instance.isPlayerDead);
         }     
     }
 }

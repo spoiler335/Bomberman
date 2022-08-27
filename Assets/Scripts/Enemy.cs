@@ -13,10 +13,11 @@ public class Enemy : MonoBehaviour
     private Animator anim;
     private Rigidbody rb;
     private NavMeshAgent nav;
-
+    private Transform player;
     [SerializeField] float minTime =2f;
     [SerializeField] float maxTime =2f;
     [SerializeField] LayerMask floorMask = 0;
+    
 
     private float waitTime;
     private State currentState;
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         rb =  GetComponent<Rigidbody>();
         nav= GetComponent<NavMeshAgent>();    
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         currentState = State.idel; 
         waitTime = 0;
     }
@@ -47,6 +49,20 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+
+        if(LevelManager.Instance.enemyCount > 0 && LevelManager.Instance.enemyCount <= 2)
+        {
+            float distance = Vector3.Distance(transform.position,player.position);
+            if(distance < 5f)
+            {
+                Vector3 dirToPlayer = transform.position - player.position;
+                Vector3 newDes = transform.position + dirToPlayer;
+                nav.SetDestination(newDes);
+                currentState = State.moving;
+                anim.SetBool("isMoving",true);
+            }
+        }
+
     }
 
     void Wander()
@@ -87,11 +103,6 @@ public class Enemy : MonoBehaviour
         {
             anim.SetTrigger("Attack");
         }    
-
-        if(other.gameObject.CompareTag("Explosion"))
-        {
-            anim.SetBool("isDead", true);
-        }
     }
 
     

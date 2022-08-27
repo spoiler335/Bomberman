@@ -6,8 +6,6 @@ using System;
 
 public class LevelManager : MonoBehaviour
 {
-
-    
     
     public int BombCount = 0;
     public int enemyCount = 0;
@@ -21,12 +19,13 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            this.enemyCount = 0;
+            
         }
     }
     void Start()
     {
-
+        Instance.isPlayerDead = false;
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
