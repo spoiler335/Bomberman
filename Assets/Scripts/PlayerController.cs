@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
+        float vel = 0;
+
         if(y==-1) //up
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y,speed);
@@ -77,6 +79,9 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0,90,0);
             anim.SetBool("isWalking",true);
         }
+
+        vel = rb.velocity.magnitude;
+        anim.SetFloat("velocity",vel);
     }
 
     private void OnCollisionEnter(Collision other) 

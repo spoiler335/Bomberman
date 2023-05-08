@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour
             waitTime -= Time.deltaTime;
             return;
         }
-        nav.SetDestination(RandomNavSphere(transform.position, 1f, floorMask));
+        nav.SetDestination(RandomNavSphere(transform.position, 3f, floorMask));
         currentState = State.moving;
         anim.SetBool("isMoving",true);
     }
